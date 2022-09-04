@@ -1,0 +1,9 @@
+import React from 'react'
+
+const Series = () => {
+  return (
+    <div className='flex items-center justify-center h-screen text-slate-300'>Series</div>
+  )
+}
+
+export default Series
