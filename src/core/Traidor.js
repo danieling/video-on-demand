@@ -45,14 +45,15 @@ export async function traerCatalogo(last) {
   return pelis
 }
 
-export async function traerPelisPorGenero(genero, last) {
+export async function traerPelisPorGenero(genero) {
   const pelis = []
   const q = query(collection(db, 'pelis'), 
-    where('genre_ids', 'array-contains', genero),
-          orderBy('title'),startAfter(last), limit(10))
+    where('id', '>=', Math.random() * (900000 - 1000) + 1000),
+    where('genre_ids', 'array-contains', genero), 
+    orderBy('id'), limit(10))
   const qs = await getDocs(q)
   qs.forEach((peli) => {
-    pelis.push(peli)
+    pelis.push(peli.data())
   })
   return pelis
 }

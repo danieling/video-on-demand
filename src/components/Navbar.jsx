@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import requests from '../core/requests';
-import styled from 'styled-components'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import requests from "../core/requests";
+import styled from "styled-components";
 
-import { useLocalStorage } from '../core/useLocalStorage'
+import { useLocalStorage } from "../core/useLocalStorage";
 
 const Navbar = () => {
-  const [country, setCountry] = useLocalStorage('country', '')
-  window.addEventListener("contextmenu", e => e.preventDefault());
+  const [country, setCountry] = useLocalStorage("country", "");
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
   function fetchCountry() {
-    fetch(requests.apip, {method: 'GET'})
-      .then(r => r.json())
-      .then(data => setCountry(data.country))
-      .catch(error => console.error(error))
+    fetch(requests.apip, { method: "GET" })
+      .then((r) => r.json())
+      .then((data) => setCountry(data.country_name))
+      .catch((error) => console.error(error));
   }
 
   useEffect(() => {
-    fetchCountry()
-  }, [])
+    fetchCountry();
+  }, []);
 
   return (
-      <Nav>
-      <Logo href='/'>
+    <Nav>
+      <Logo href="/">
         <img src="/img/logo.png" alt="peliculiar logo pelis pa culiar" />
       </Logo>
-        <NavMenu>
-          <Link to='/'>
-            <img src="/img/home-icon.svg" alt="HOME" />
-            <span>INICIO</span>
-          </Link>
-          <Link to='/buscar'>
-            <img src="/img/search-icon.svg" alt="buscar" />
-            <span>BUSCAR</span>
-          </Link>
-          <Link to='/favoritos'>
-            <img src="/img/watchlist-icon.svg" alt="favoritos" />
-            <span>MI LISTA</span>
-          </Link>
-          <Link to='/pelis'>
-            <img src="/img/movie-icon.svg" alt="peliculas online" />
-            <span>PELÍCULAS</span>
-          </Link>
-          <Link to='/series'>
-            <img src="/img/series-icon.svg" alt="series de tv" />
-            <span>SERIES</span>
-          </Link>
-        </NavMenu>
-      </Nav>
-  )
-}
+      <NavMenu>
+        <Link to="/">
+          <img src="/img/home-icon.svg" alt="HOME" />
+          <span>INICIO</span>
+        </Link>
+        <Link to="/buscar">
+          <img src="/img/search-icon.svg" alt="buscar" />
+          <span>BUSCAR</span>
+        </Link>
+        <Link to="/favoritos">
+          <img src="/img/watchlist-icon.svg" alt="favoritos" />
+          <span>MI LISTA</span>
+        </Link>
+        <Link to="/pelis">
+          <img src="/img/movie-icon.svg" alt="peliculas online" />
+          <span>PELÍCULAS</span>
+        </Link>
+        <Link to="/series">
+          <img src="/img/series-icon.svg" alt="series de tv" />
+          <span>SERIES</span>
+        </Link>
+      </NavMenu>
+    </Nav>
+  );
+};
 
 const Nav = styled.nav`
   position: fixed;
@@ -62,7 +62,7 @@ const Nav = styled.nav`
   padding: 0 36px;
   letter-spacing: 16px;
   z-index: 3;
-`
+`;
 
 const Logo = styled.a`
   padding: 0;
@@ -74,7 +74,7 @@ const Logo = styled.a`
     display: block;
     width: 100%;
   }
-`
+`;
 
 const NavMenu = styled.div`
   text-shadow: 1px 1px black;
@@ -95,7 +95,7 @@ const NavMenu = styled.div`
     img {
       height: 30px;
       min-width: 30px;
-      width:30px;
+      width: 30px;
       z-index: auto;
     }
     span {
@@ -106,12 +106,12 @@ const NavMenu = styled.div`
       line-height: 1.08;
       white-space: nowrap;
       position: relative;
-    
+
       &:before {
-        background-color: rgb(249,249,249);
+        background-color: rgb(249, 249, 249);
         border-radius: 0px 0px 4px 4px;
         bottom: -6px;
-        content: '';
+        content: "";
         height: 2px;
         left: 0px;
         opacity: 0;
@@ -133,8 +133,8 @@ const NavMenu = styled.div`
     }
   }
   @media (max-width: 768px) {
-    display: none ;
+    display: none;
   }
-`
+`;
 
-export default Navbar
+export default Navbar;

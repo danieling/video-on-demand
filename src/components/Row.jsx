@@ -4,24 +4,19 @@ import { traerPelisPorGenero } from "../core/Traidor";
 import Movie from "./Movie";
 
 const Row = ({ title, rowId }) => {
-  const [movies, setMovies] = useState([])
-  const [last, setLast] = useState(null)
+  const [movies, setMovies] = useState([]);
 
   const fetchPelis = () => {
-    Promise.resolve(traerPelisPorGenero(rowId, last)).then(
-      (arrList) => {
-        arrList.forEach((peli, i) => {
-          if (arrList.length - 1 == i)
-            setLast(peli)
-          setMovies((movies) => [...movies, peli.data()])
-        });
-      }
-    );
+    Promise.resolve(traerPelisPorGenero(rowId)).then((arrList) => {
+      arrList.forEach((peli) => {
+        setMovies((movies) => [...movies, peli]);
+      });
+    });
   };
 
   useEffect(() => {
-    if (movies.length === 0) fetchPelis()
-  }, [])
+    if (movies.length === 0) fetchPelis();
+  }, []);
 
   const slideLeft = () => {
     let slider = document.getElementById("slider" + rowId);
@@ -31,8 +26,11 @@ const Row = ({ title, rowId }) => {
   const slideRight = () => {
     var slider = document.getElementById("slider" + rowId);
     slider.scrollLeft = slider.scrollLeft + window.innerWidth;
-    if(slider.scrollWidth - window.innerWidth - slider.scrollLeft <= window.innerWidth)
-      fetchPelis()
+    if (
+      slider.scrollWidth - window.innerWidth - slider.scrollLeft <=
+      window.innerWidth
+    )
+      fetchPelis();
   };
 
   return (
