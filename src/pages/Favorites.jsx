@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
+import Movie from "../components/Movie";
+import { useLocalStorage } from "../core/useLocalStorage";
 
 const Favorites = () => {
-  return (
-    <div className='flex items-center justify-center h-screen text-slate-300'>Favorites</div>
-  )
-}
+  const [favs, setFavs] = useLocalStorage("favMovies", []);
 
-export default Favorites
+  return (
+    <div className="pt-36 flex flex-wrap">
+      {favs.map((movie, id) => (
+        <Movie key={id} movie={movie} />
+      ))}
+    </div>
+  );
+};
+
+export default Favorites;

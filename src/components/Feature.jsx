@@ -25,17 +25,18 @@ const Feature = () => {
   };
 
   const saveShow = () => {
+    let pelis = window.localStorage.getItem("favMovies");
+    pelis = pelis ? JSON.parse(pelis) : [];
     setLike(!like);
     if (!like) {
-      favMovies.push(featured);
-      setFavMovies(favMovies);
+      pelis.push(featured);
+      setFavMovies(pelis);
     } else {
-      const pelis = favMovies.filter((p) => p.id != featured?.id);
+      pelis = pelis.filter((p) => p.id != featured?.id);
       setFavMovies(pelis);
     }
   };
 
-  console.log("feature");
   useEffect(() => {
     Promise.resolve(traerFeatured()).then((peli) => {
       setFeatured(peli);

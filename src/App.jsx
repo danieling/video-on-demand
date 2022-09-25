@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     setTimeout(function () {
       var ad = document.querySelector("ins.adsbygoogle");
-      console.log(ad);
       if (!ad) {
         setAdblock(true);
       }

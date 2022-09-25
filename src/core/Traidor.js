@@ -34,13 +34,15 @@ export async function traerPelisEstreno() {
   return pelis
 }
 
-export async function traerCatalogo(last) {
+var lasti = null;
+export async function traerCatalogo() {
   const pelis = []
   const q = query(collection(db, 'pelis'), 
-            orderBy('title'), startAfter(last), limit(10))
+            orderBy('title'), startAfter(lasti), limit(15))
   const qs = await getDocs(q)
   qs.forEach((doc) => {
     pelis.push(doc)
+    lasti = doc
   })
   return pelis
 }
@@ -74,7 +76,7 @@ export async function traerFeatured() {
 export async function traerPorTitulo(titulo) {
   const pelis = []
   const q = query(collection(db, 'pelis'), 
-            where('titleAsArray', 'array-contains', titulo))
+            where('titleAsArray', 'array-contains', titulo), limit(15))
   const qs = await getDocs(q)
   qs.forEach((peli) => {
     pelis.push(peli.data())
@@ -85,7 +87,7 @@ export async function traerPorTitulo(titulo) {
 
 
 
-async function traerTodo() {
+export async function traerTodo() {
   const q = query(collection(db, 'pelis'))
   const qs = await getDocs(q)
   qs.forEach((doc) => {
@@ -94,17 +96,52 @@ async function traerTodo() {
 }
 
 function getArrTitle(peli){
-  const arrTitle = []
-  const title = peli.title ? peli.title.toLowerCase() : ''
-  const origina_title = peli.original_title ? peli.original_title.toLowerCase() : ''
+  const dict = new Map()
+  dict.set('á', 'a')
+  dict.set('é', 'e')
+  dict.set('í', 'i')
+  dict.set('ó', 'o')
+  dict.set('ú', 'u')
+  dict.set('¿', '')
+  dict.set('?', '')
+  dict.set('¡', '')
+  dict.set('!', '')
+  dict.set(':', '')
+  dict.set('(', '')
+  dict.set(')', '')
+  const arrTitle = new Set()
+  let title = peli.title ? peli.title.toLowerCase() : ''
+  let origina_title = peli.original_title ? peli.original_title.toLowerCase() : ''
+
+  dict.forEach((v, k) => {
+    title = title.replaceAll(k, v)
+    origina_title = origina_title.replaceAll(k, v)
+  })
+
   for(let i = 1; i < title.length + 1; i++){
-    arrTitle.push(title.substring(0, i))
-  }
-  for(let i = 1; i < origina_title.length + 1; i++){
-    arrTitle.push(origina_title.substring(0, i))
+    arrTitle.add(title.substring(0, i))
   }
 
-  return arrTitle
+  for(let i = 1; i < origina_title.length + 1; i++){
+    arrTitle.add(origina_title.substring(0, i))
+  }
+
+  title = title.trim().split(/\s+/);
+  origina_title = origina_title.trim().split(/\s+/);
+
+  title.map(w => {
+    for(let i = 1; i < w.length + 1; i++){
+      arrTitle.add(w.substring(0, i))
+    }
+  })
+
+  origina_title.map(w => {
+    for(let i = 1; i < w.length + 1; i++){
+      arrTitle.add(w.substring(0, i))
+    }
+  })
+  
+  return Array.from(arrTitle)
 }
 
 async function update(arrTitle, docID) {
@@ -115,11 +152,11 @@ async function update(arrTitle, docID) {
 }
 
 export async function incrementViewCounter(idPeli){
-  const country = window.localStorage.getItem('country')
-  const q = doc(db, 'pelis', idPeli)
+  const country = JSON.parse(window.localStorage.getItem('country'))
+  const q = doc(db, 'pelis', idPeli.toString())
   const ref = await getDoc(q)
   const views = ref.data().views_from
-  
+
   for(let i = 0; i < views.length; i++){
     if(views[i].country == country){
       views[i].times_played = views[i].times_played + 1
@@ -128,7 +165,7 @@ export async function incrementViewCounter(idPeli){
     if(country && views.length == i + 1)
       views.push({country: country, times_played: 0})
   }
-  
+
   await updateDoc(q, {
     views_from: views
   })

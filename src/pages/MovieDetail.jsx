@@ -30,19 +30,22 @@ const MovieDetail = () => {
   }, []);
 
   return (
-    <div>
+    <div className="ml-8 mr-8 mb-10">
       <div className="grid place-items-center">
         <h2 className="text-green-50 text-3xl py-40">
           {peli ? peli.title : movieParam?.title}
         </h2>
-        <iframe
-          src={`https://sbspeed.com/e/${
-            peli ? peli.video : movieParam?.video
-          }.html`}
-          width="640"
-          height="360"
-          allowFullScreen
-        />
+        <div className="relative overflow-hidden w-full pt-[56.25%]">
+          <iframe
+            className="absolute top-0 left-0 bottom-0 right-0 w-full h-full"
+            src={`https://sblanh.com/e/${
+              peli ? peli.video : movieParam?.video
+            }.html`}
+            width="640"
+            height="360"
+            allowFullScreen
+          />
+        </div>
       </div>
     </div>
   );
