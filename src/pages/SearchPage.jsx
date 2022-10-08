@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import Movie from "../components/Movie";
 import { traerPorTitulo } from "../core/Traidor";
 
@@ -20,6 +21,14 @@ const SearchPage = () => {
 
   return (
     <div className="mt-36 mb-10 ml-10 mr-10 ">
+      <Helmet>
+        <title>Buscador de Películas y Series</title>
+        <link rel="canonical" href="/buscar" />
+        <meta
+          name="description"
+          content="buscador de películas y Series que hay en el sitio https://www.peliculiar.click"
+        />
+      </Helmet>
       <div className="flex items-center">
         <div className="relative w-full">
           <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">

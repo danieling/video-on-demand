@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useMemo } from "react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import Movie2 from "../components/Movie2";
 import { traerCatalogo } from "../core/Traidor";
 
@@ -41,6 +42,14 @@ const Movies = () => {
 
   return (
     <div className="mt-36 mb-10 ml-10 mr-10 ">
+      <Helmet>
+        <title>Catálogo de Películas | Online Latino</title>
+        <link rel="canonical" href="/pelis" />
+        <meta
+          name="description"
+          content="Todo el catalogo de Películas que hay en el portal en orden alfabetico."
+        />
+      </Helmet>
       <div className="flex flex-wrap mt-8 justify-center">
         {catalogo?.map((movie, id) => (
           <Movie2 key={id} movie={movie.data()} />

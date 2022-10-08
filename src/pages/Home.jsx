@@ -1,9 +1,18 @@
+import { Helmet } from "react-helmet-async";
 import Feature from "../components/Feature";
 import Row from "../components/Row";
 
 const Home = () => {
   return (
     <div>
+      <Helmet>
+        <title>peliculiar.click | online latino</title>
+        <meta
+          name="description"
+          content="En esta página encontraras peliculas y series  de Netflix HboMax Primevideo Disney+ Star+ Paramount+ ViX Plutotv AmericaTv. Cada día se añade mas contenido!"
+        />
+        <link rel="canonical" href="/" />
+      </Helmet>
       <Feature />
       <Row rowId={35} title="Comedias" />
       <Row rowId={16} title="Animación" />
